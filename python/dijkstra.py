@@ -9,11 +9,6 @@ def vertice_menor_custo(custos):
             vertice_menor_custo = vertice
     return vertice_menor_custo
 
-pais = {}
-pais['a'] = 'inicio'
-pais['b'] = 'inicio'
-pais['fim'] = None
-
 def menor_custo(custos):
     vertice = vertice_menor_custo(custos)
     custo = 0
@@ -27,7 +22,6 @@ def menor_custo(custos):
 
             if custos[vizinho] > novo_custo:
                 custos[vizinho] = novo_custo
-                pais[vizinho] = vertice
                 if vertice in vertices_menor_custo: 
                     vertices_menor_custo.remove(vertice)
 
