@@ -115,24 +115,49 @@ def recebe_entradas():
     entrada['setup'] = define_grafo_setup(entrada['queries'])
     return entrada
 
+def vertices_vizinhos(arestas, qtd_vertices, inicio):
+    vizinhos = {}
+    for vizinho in range(1, qtd_vertices + 1):
+        vizinhos[vizinho] = []
+
+    for aresta in arestas:
+        vizinhos[aresta[VERTICE_ORIGEM]].append(aresta[VERTICE_DESTINO])
+
+    return vizinhos
+
 def caminho_custo(entrada):
+    distancias = []
     for query in range(0, entrada['queries']):
         arestas = entrada['setup'][query]['arestas']
         qtd_vertices = entrada['setup'][query]['vertices']
         inicio = entrada['setup'][query]['inicio']
-        distancias = {}
+        vizinhos = vertices_vizinhos(arestas, qtd_vertices, inicio)
+        distancias.append({})
         for vertice in range(1, qtd_vertices + 1):
+            if len(vizinhos[vertice]) == 0:
+                distancias[query][vertice] = PESO_SEM_ARESTA
+
+            custo = 0
             if vertice != inicio:
-                custo = PESO_SEM_ARESTA
                 for aresta in arestas:
                     if vertice == aresta[VERTICE_DESTINO]:
                         custo = PESO_ARESTA
-                distancias[vertice] = custo
+
+            if vertice not in distancias[query]:
+                distancias[query][vertice] = custo
+            else:
+                distancias[query][vertice] = distancias[query][vertice] + custo
+
+            for vizinho in vizinhos[vertice]:
+                distancias[query][vertice] = distancias[query][vertice] + PESO_ARESTA
+
     return distancias
 
 def imprime_caminhos(distancias):
-    for distancia in distancias.values():
-        print(distancia, end = " ")
+    for distancia in distancias:
+        for custo in distancia.values():
+            print(custo, end = " ")
+        print("")
 
 entrada = recebe_entradas()
 distancias = caminho_custo(entrada)
