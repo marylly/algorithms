@@ -25,7 +25,7 @@ def define_pesquisa():
 
 def recebe_entradas():
     entrada = {}
-    entrada["queries"] = int(define_pesquisa())
+    entrada["queries"] = define_pesquisa()
     entrada['setup'] = []
     for query in range(1, entrada['queries'] + 1):
         estrutura = input("Informe a estrutura do grafo " + str(query) + " (Quantidade de Vértice <espaço> Quantidade de Arestas): ")
