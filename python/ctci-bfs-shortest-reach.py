@@ -1,3 +1,5 @@
+QTD_VERTICES = 0
+QTD_ARESTAS = 1
 VERTICE_ORIGEM = 0
 VERTICE_DESTINO = 1
 PESO_ARESTA = 6
@@ -28,15 +30,49 @@ def define_pesquisa():
     queries = valida_pesquisa(queries)
     return queries
 
+def define_grafo_setup(queries):
+    setup = []
+    for query in range(1, queries + 1):
+        estrutura = input("Informe a estrutura do grafo " + str(query) + " (Quantidade de Vértice <espaço> Quantidade de Arestas): ")
+        grafo = estrutura.split(" ")
+        setup.append({"vertices": int(grafo[QTD_VERTICES])})
+        setup[query - 1]["arestas"] = []
+        for aresta in range(1, int(grafo[QTD_ARESTAS]) + 1):
+            setup[query - 1]["arestas"].append(define_aresta(aresta, query))
+        print("")
+        setup[query - 1]['inicio'] = define_inicio(setup[query - 1]['vertices'])
+    return setup
+
+def formata_vertices(vertices):
+    vertices = vertices.split(" ")
+    return [vertices[VERTICE_ORIGEM], vertices[VERTICE_DESTINO]]
+
+def valida_aresta(vertices):
+    vertices[VERTICE_ORIGEM] = converte_inteiro(vertices[VERTICE_ORIGEM])
+    vertices[VERTICE_DESTINO] = converte_inteiro(vertices[VERTICE_DESTINO])
+
+    if not valida_numero_inteiro(vertices[VERTICE_DESTINO]):
+        raise ValueError("Informe um valor numérico inteiro para o vértice de origem da aresta")
+
+    if not valida_numero_inteiro(vertices[VERTICE_DESTINO]):
+        raise ValueError("Informe um valor numérico inteiro para o vértice de destino da aresta")
+
+    return vertices
+
+def define_aresta(aresta, query):
+    vertices = input("Informe a aresta " + str(aresta) + " do grafo " + str(query) + " (Vértice Origem <espaço> Vértice Destino): ")
+    aresta = valida_aresta(formata_vertices(vertices))
+    return aresta
+
 def valida_inicio(inicio, qtd_vertices):
     inicio = converte_inteiro(inicio)
-    if valida_numero_inteiro(inicio):
-        queries = converte_inteiro(inicio)
-    else:
+    if not valida_numero_inteiro(inicio):
         raise ValueError("Informe um valor numérico inteiro para o vértice de início da pesquisa")
 
     if inicio < 1 or inicio > qtd_vertices:
         raise ValueError("Vértice informado inválido.")
+
+    return inicio
 
 def define_inicio(qtd_vertices):
     inicio = input("Informe o vértice de início da pesquisa: ")
@@ -45,21 +81,8 @@ def define_inicio(qtd_vertices):
 
 def recebe_entradas():
     entrada = {}
-    entrada["queries"] = define_pesquisa()
-    entrada['setup'] = []
-    for query in range(1, entrada['queries'] + 1):
-        estrutura = input("Informe a estrutura do grafo " + str(query) + " (Quantidade de Vértice <espaço> Quantidade de Arestas): ")
-        grafo = estrutura.split(" ")
-        entrada['setup'].append({"vertices": int(grafo[0])})
-        entrada['setup'][query - 1]["arestas"] = []
-        for aresta in range(1, int(grafo[1]) + 1):
-            vertices = input("Informe a aresta " + str(aresta) + " do grafo " + str(query) + " (Vértice Origem <espaço> Vértice Destino): ")
-            vertice_origem = int(vertices.split(" ")[0])
-            vertice_destino = int(vertices.split(" ")[1])
-            entrada['setup'][query - 1]["arestas"].append([vertice_origem, vertice_destino])
-        print("")
-        entrada['setup'].append({'inicio': define_inicio(entrada['setup'][query - 1]['vertices'])})
-        print(entrada['setup'])
+    entrada['queries'] = define_pesquisa()
+    entrada['setup'] = define_grafo_setup(entrada['queries'])
     return entrada
 
 def caminho_custo(entrada):
