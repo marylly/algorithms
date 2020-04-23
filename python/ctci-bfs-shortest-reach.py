@@ -24,10 +24,24 @@ def valida_pesquisa(queries):
     return queries
 
 def define_pesquisa():
-    print("Informe a quantidade de grafos a pesquisar:")
-    queries = input()
-    valida_pesquisa(queries)
+    queries = input("Informe a quantidade de grafos a pesquisar: ")
+    queries = valida_pesquisa(queries)
     return queries
+
+def valida_inicio(inicio, qtd_vertices):
+    inicio = converte_inteiro(inicio)
+    if valida_numero_inteiro(inicio):
+        queries = converte_inteiro(inicio)
+    else:
+        raise ValueError("Informe um valor numérico inteiro para o vértice de início da pesquisa")
+
+    if inicio < 1 or inicio > qtd_vertices:
+        raise ValueError("Vértice informado inválido.")
+
+def define_inicio(qtd_vertices):
+    inicio = input("Informe o vértice de início da pesquisa: ")
+    inicio = valida_inicio(inicio, qtd_vertices)
+    return inicio
 
 def recebe_entradas():
     entrada = {}
@@ -44,14 +58,15 @@ def recebe_entradas():
             vertice_destino = int(vertices.split(" ")[1])
             entrada['setup'][query - 1]["arestas"].append([vertice_origem, vertice_destino])
         print("")
-    entrada['inicio'] = int(input("Informe o vértice de início da pesquisa: "))
+        entrada['setup'].append({'inicio': define_inicio(entrada['setup'][query - 1]['vertices'])})
+        print(entrada['setup'])
     return entrada
 
 def caminho_custo(entrada):
     for query in range(0, entrada['queries']):
         arestas = entrada['setup'][query]['arestas']
         qtd_vertices = entrada['setup'][query]['vertices']
-        inicio = entrada['inicio']
+        inicio = entrada['setup'][query]['inicio']
         distancias = {}
         for vertice in range(1, qtd_vertices + 1):
             if vertice != inicio:
