@@ -1,63 +1,46 @@
-# 1
-#   6  4
-#     1  2
-#     1  5
-#     2  3
-#     3  4
-# 1
-
-# q = graph
-# q[n m] = q[qtd de nós arestas]
-# [n m] = [u v]
-# [u v] = [nó origem  nó destino]
-# s = vértice de início
-
-# queries = 1 # q[1]
-# qtd_vertices = 6 # q[2][1] n
-# qtd_arestas = 4 # q[2][2] m
-# arestas = []
-# arestas.append([1, 2]) # q[3][1]
-# arestas.append([1, 5]) # q[3][2]
-# arestas.append([2, 3]) # q[3][3]
-# arestas.append([3, 4]) # q[3][4]
-
-queries = 1 # q[1]
-qtd_vertices = 4 # q[2][1] n
-qtd_arestas = 2 # q[2][2] m
-arestas = []
-arestas.append([1, 2]) # q[3][1]
-arestas.append([1, 3]) # q[3][2]
-inicio = 1
-
 VERTICE_ORIGEM = 0
 VERTICE_DESTINO = 1
 PESO_ARESTA = 6
 PESO_SEM_ARESTA = -1
 
-def vertices_vizinhos(arestas, qtd_vertices):
-    vizinhos = {}
-    for vizinho in range(1, qtd_vertices):
-        vizinhos[vizinho] = []
+def recebe_entradas():
+    entrada = {}
+    print("Informe a quantidade de grafos a pesquisar:")
+    entrada["queries"] = int(input())
+    entrada['setup'] = []
+    for query in range(1, entrada['queries'] + 1):
+        estrutura = input("Informe a estrutura do grafo " + str(query) + " (Quantidade de Vértice <espaço> Quantidade de Arestas): ")
+        grafo = estrutura.split(" ")
+        entrada['setup'].append({"vertices": int(grafo[0])})
+        entrada['setup'][query - 1]["arestas"] = []
+        for aresta in range(1, int(grafo[1]) + 1):
+            vertices = input("Informe a aresta " + str(aresta) + " do grafo " + str(query) + " (Vértice Origem <espaço> Vértice Destino): ")
+            vertice_origem = int(vertices.split(" ")[0])
+            vertice_destino = int(vertices.split(" ")[1])
+            entrada['setup'][query - 1]["arestas"].append([vertice_origem, vertice_destino])
+        print("")
+    entrada['inicio'] = int(input("Informe o vértice de início da pesquisa: "))
+    return entrada
 
-    for aresta in arestas:
-        vizinhos[aresta[VERTICE_ORIGEM]].append(aresta[VERTICE_DESTINO])
-
-    return vizinhos
-
-def caminho_custo(arestas, qtd_vertices):
-    distancias = {}
-
-    for vertice in range(1, qtd_vertices + 1):
-        if vertice != inicio:
-            custo = PESO_SEM_ARESTA
-            for aresta in arestas:
-                if vertice == aresta[VERTICE_DESTINO]:
-                    custo = PESO_ARESTA
-            distancias[vertice] = custo
-
+def caminho_custo(entrada):
+    for query in range(0, entrada['queries']):
+        arestas = entrada['setup'][query]['arestas']
+        qtd_vertices = entrada['setup'][query]['vertices']
+        inicio = entrada['inicio']
+        distancias = {}
+        for vertice in range(1, qtd_vertices + 1):
+            if vertice != inicio:
+                custo = PESO_SEM_ARESTA
+                for aresta in arestas:
+                    if vertice == aresta[VERTICE_DESTINO]:
+                        custo = PESO_ARESTA
+                distancias[vertice] = custo
     return distancias
 
-distancias = caminho_custo(arestas, qtd_vertices)
+def imprime_caminhos(distancias):
+    for distancia in distancias.values():
+        print(distancia, end = " ")
 
-for distancia in distancias.values():
-    print(distancia, end = " ")
+entrada = recebe_entradas()
+distancias = caminho_custo(entrada)
+imprime_caminhos(distancias)
