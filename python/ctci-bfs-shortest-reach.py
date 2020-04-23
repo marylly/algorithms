@@ -3,10 +3,29 @@ VERTICE_DESTINO = 1
 PESO_ARESTA = 6
 PESO_SEM_ARESTA = -1
 
+def converte_inteiro(valor):
+    return int(valor)
+
+def valida_pesquisa(queries):
+    if isinstance(queries, (int, complex, float)):
+        queries = converte_inteiro(queries)
+    else:
+        raise ValueError("Informe um valor numérico inteiro para a quantidade de pesquisas")
+
+    if queries < 1 or queries > 10:
+        raise ValueError("Informe um valor numérico inteiro entre 1 e 10 para a quantidade de pesquisas")
+
+    return queries
+
+def define_pesquisa():
+    print("Informe a quantidade de grafos a pesquisar:")
+    queries = input()
+    valida_pesquisa(queries)
+    return queries
+
 def recebe_entradas():
     entrada = {}
-    print("Informe a quantidade de grafos a pesquisar:")
-    entrada["queries"] = int(input())
+    entrada["queries"] = int(define_pesquisa())
     entrada['setup'] = []
     for query in range(1, entrada['queries'] + 1):
         estrutura = input("Informe a estrutura do grafo " + str(query) + " (Quantidade de Vértice <espaço> Quantidade de Arestas): ")
