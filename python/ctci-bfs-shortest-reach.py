@@ -33,17 +33,44 @@ def define_pesquisa():
     queries = valida_pesquisa(queries)
     return queries
 
+def formata_grafo_setup(estrutura):
+    setup = estrutura.split(" ")
+    return setup
+
+def valida_grafo_setup(grafo):
+    grafo[QTD_VERTICES] = converte_inteiro(grafo[QTD_VERTICES])
+    grafo[QTD_ARESTAS] = converte_inteiro(grafo[QTD_ARESTAS])
+    maximo = maximo_qtd_arestas(grafo[QTD_VERTICES])
+
+    if not valida_numero_inteiro(grafo[QTD_VERTICES]):
+        raise ValueError("Informe um valor numérico inteiro para a quantidade de vértices")
+
+    if not valida_numero_inteiro(grafo[QTD_ARESTAS]):
+        raise ValueError("Informe um valor numérico inteiro para a quantidade de arestas")
+
+    if grafo[QTD_ARESTAS] < 1 or grafo[QTD_ARESTAS] > maximo:
+        raise ValueError("Informe um valor numérico inteiro entre 1 e " + str(maximo) + " para a quantidade de arestas")
+
+    return grafo
+
 def define_grafo_setup(queries):
     setup = []
     for query in range(1, queries + 1):
         estrutura = input("Informe a estrutura do grafo " + str(query) + " (Quantidade de Vértice <espaço> Quantidade de Arestas): ")
-        grafo = estrutura.split(" ")
-        setup.append({"vertices": int(grafo[QTD_VERTICES])})
+        grafo = valida_grafo_setup(formata_grafo_setup(estrutura))
+
+        print("")
+
+        setup.append({"vertices": grafo[QTD_VERTICES]})
+
         setup[query - 1]["arestas"] = []
         for aresta in range(1, int(grafo[QTD_ARESTAS]) + 1):
             setup[query - 1]["arestas"].append(define_aresta(aresta, query))
+
         print("")
+
         setup[query - 1]['inicio'] = define_inicio(setup[query - 1]['vertices'])
+    print("")
     return setup
 
 def formata_vertices(vertices):
