@@ -5,6 +5,9 @@ VERTICE_DESTINO = 1
 PESO_ARESTA = 6
 PESO_SEM_ARESTA = -1
 
+def maximo_qtd_arestas(qtd_vertices):
+    return (qtd_vertices * (qtd_vertices - 1)) / 2
+
 def valida_numero_inteiro(valor):
     return isinstance(valor, (int, complex, float))
 
