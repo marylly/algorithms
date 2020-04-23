@@ -3,13 +3,19 @@ VERTICE_DESTINO = 1
 PESO_ARESTA = 6
 PESO_SEM_ARESTA = -1
 
+def valida_numero_inteiro(valor):
+    return isinstance(valor, (int, complex, float))
+
 def converte_inteiro(valor):
-    return int(valor)
+    try:
+        valor = int(valor)
+    except ValueError:
+        print("Informe um valor numérico inteiro")
+    return valor
 
 def valida_pesquisa(queries):
-    if isinstance(queries, (int, complex, float)):
-        queries = converte_inteiro(queries)
-    else:
+    queries = converte_inteiro(queries)
+    if not valida_numero_inteiro(queries):
         raise ValueError("Informe um valor numérico inteiro para a quantidade de pesquisas")
 
     if queries < 1 or queries > 10:
