@@ -135,43 +135,36 @@ def caminho_custo(entrada):
         distancias.append({})
         processados = []
         for vertice in range(1, qtd_vertices + 1):
-            if len(vizinhos[vertice]) == 0:
-                distancias[query][vertice] = PESO_SEM_ARESTA
-            else:
+            distancias[query][vertice] = 0
+
+            if len(vizinhos[vertice]) > 0:
                 distancias[query][vertice] = PESO_ARESTA
 
-        for vizinho in vizinhos.values():
-            for vertice_vizinho in vizinho:
-               distancias[query][vertice_vizinho] = PESO_ARESTA
+        for vizinho in vizinhos:
+            for vertice_vizinho in vizinhos[vizinho]:
+                if len(vizinhos[vertice_vizinho]) == 0:
+                    distancias[query][vertice_vizinho] = distancias[query][vertice_vizinho] + PESO_ARESTA
 
-        vertice = inicio
-        while vertice not in processados or vertice < qtd_vertices:
+        vertice = 1
+        while vertice not in processados and vertice <= qtd_vertices:
             processados.append(vertice)
 
-            for vizinho in vizinhos[vertice]:
-                distancias[query][vizinho] = distancias[query][vizinho] + distancias[query][vertice]
-                if len(vizinhos[vizinho]) > 0 and vertice != vizinho and vizinho not in processados:
-                    vertice = vizinho
+            if vertice != inicio:
+                for vizinho in vizinhos[vertice]:
+                    distancias[query][vizinho] = distancias[query][vizinho] + distancias[query][vertice]
 
-            if vertice == inicio:
-                vertice = 1
-
-            if len(vizinhos[vertice]) == 0 and vertice < qtd_vertices:
-                vertice = vertice + 1
-
-            if vertice in processados and vertice < qtd_vertices:
-                vertice = vertice + 1
-
-            if inicio in processados and vertice == inicio and 1 not in processados:
-                vertice = 1
+            if distancias[query][vertice] == 0:
+               distancias[query][vertice] = -1
+            
+            vertice = vertice + 1
+               
         del distancias[query][inicio]
-        processados.remove(inicio)
     return distancias
 
 def imprime_caminhos(distancias):
     for distancia in distancias:
-        for custo in distancia.values():
-            print(custo, end = " ")
+        for vertice in distancia:
+            print(distancia[vertice], end = " ")
         print("")
 
 entrada = recebe_entradas()
