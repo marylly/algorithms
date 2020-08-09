@@ -45,55 +45,18 @@ class Node:
 
        // this is a node of the tree , which contains info as data, left , right
 '''
-def height(root):
-    nodes = arr
-    root = int(root.__str__())
+def height(root):          
+    return checkNode(root)
+
+def checkNode(node):
     height = 0
-    processados = []
-    quant_nodes = len(nodes)
-
-    print("tipo array", type(arr))
-    for i in arr:
-        print(type(i))
-
-    if quant_nodes > 1:
-        node_menor = nodes.index(root)
-        index_direita = 0
-        index_esquerda = 0
-        # while node not in processados:
-        #     node_menor = nodes.index()
-        print("node menor", node_menor)
-
-
-
-
-
-
-        # for node in nodes:
-        #     if node == root:
-        #         node_menor = node
-        #         height = height + 1
-
-        #     if node_menor > node:
-        #         height = height + 1
-        #         node_menor = node              
+    if node != None:
+        if node.left != None:
+            height = 1 + checkNode(node.left)
+            
+        if node.right != None:
+            height = 1 + checkNode(node.right)
     return height
-
-# def height(root):
-#     nodes = arr
-#     root = int(root.__str__())
-#     height = 0
-#     if len(nodes) > 1:
-#         node_menor = 0
-#         for node in nodes:
-#             if node == root:
-#                 node_menor = node
-#                 height = height + 1
-
-#             if node_menor > node:
-#                 height = height + 1
-#                 node_menor = node              
-#     return height
 
 tree = BinarySearchTree()
 t = int(input())
