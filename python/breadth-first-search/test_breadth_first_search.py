@@ -8,7 +8,7 @@ class TestBreadthFirstSearch(unittest.TestCase):
     graph = None
 
     def setUp(self):
-        self.QUANTITY = 2
+        self.QUANTITY = 5
         self.START = 2
         self.graph = Graph(self.QUANTITY, self.START)
         self.graph.add_edge(4, 2)
@@ -43,52 +43,35 @@ class TestBreadthFirstSearch(unittest.TestCase):
 
     def test_last_path_node(self):
         self.assertEqual(self.graph.check_if_last_path_node(2), True)
+        self.assertEqual(self.graph.check_if_last_path_node(5), True)
 
-    def test_node_path(self):
-        path = []
-        # self.graph.get_path(4, path)
-        # self.assertEqual(path, [2])
-        self.graph.get_path(1, path)
+    # def test_node_path(self):
+    #     self.assertEqual(self.graph.get_node_paths(1),[[2],[3,5]])
 
+    # def test_all_paths(self):
+    #     self.assertEqual(self.graph.get_all_paths(),[[],[[2],[3,5]],[[5]],[[2]],[]])
+
+    # def test_node_cost(self):
+    #     self.assertEqual(self.graph.get_node_cost(5), 12)
+
+    def test_all_cost(self):
+        self.graph.get_all_paths()
+        self.assertEqual(self.graph.get_costs(),  [6, 6, -1, 12])
 
     # def test_add_node(self):
     #     """
     #     Test the graph nodes input
-    #     2 <- Node Start
-    #     4 2 <- Nodes
-    #     1 2
-    #     1 3
     #     1
     #     3 1
     #     2 3
     #     2
     #     """
-        # graph = Graph(2)
-        # graph.add_node(4, 2, 6)
-        # graph.add_node(1, 2, 6)
-        # graph.add_node(1, 3, 6)
-        # graph.add_node(3, 5, 6)
 
-        # print(graph.nodes)
-        # self.assertEqual(graph.get_dest_nodes(4), [2])
-        # self.assertEqual(graph.get_dest_nodes(1), [2, 3])
-        # graph.check_if_last_path_node(3)
-        # print(graph.node_paths(1))
-
-        # graph = Graph(7, 2)
-        # graph.add_edge(1,2,6)
-        # graph.add_edge(1,3,6)
-        # graph.add_edge(3,4,6)
-        # graph.add_edge(2,5,6)
-        # print(graph.node_paths(2))
-        # graph.calc_node_paths()
-
-
-    def test_path_cost(self):
-        """
-        6 6 -1
-        -1 6
-        """
+    # def test_path_cost(self):
+    #     """
+    #     6 6 -1
+    #     -1 6
+    #     """
 
     def tearDown(self):
         del self.QUANTITY

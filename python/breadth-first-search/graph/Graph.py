@@ -3,7 +3,8 @@ from operator import add
 
 class Graph(object):
     nodes = {}
-    paths = {}
+    paths = []
+    costs = []
     def __init__(self, qtd_nodes, start=None):
         self.qtd_nodes = qtd_nodes
         self.start = start
@@ -42,33 +43,68 @@ class Graph(object):
     def _node_not_origin(self, node):
         return node not in self.nodes.keys()
 
+    def _node_only_origin(self, node):
+        return node in list(self.nodes.keys()) and node not in self.get_all_destination_nodes()
+
     def _node_not_destination(self, node):
         return node not in self.get_all_destination_nodes()
 
     def check_if_last_path_node(self, node):
-        return node in self.get_all_destination_nodes() and self._node_not_origin(node)
+        return node in self.get_all_destination_nodes() and len(self.get_destination_nodes(node)) == 0
 
-    def get_path(self, node, path):
-        print("to aqui", node)
+    def get_node_paths(self, node):
         nodes_dest = self.get_destination_nodes(node)
-        print(nodes_dest)
+        dest_count = len(nodes_dest)
+        count_path = 0
+        self.paths.insert(node, [])
+        for dest in range(0, dest_count):
+            self.paths[node].insert(count_path, [nodes_dest[dest]])
+            self.get_path(node, nodes_dest[dest], count_path)
+            count_path = count_path + 1
+
+        if dest_count == 0:
+            self.paths[node].insert(count_path, [])
+
+        return self.paths
+
+    def get_path(self, node_origin, node, count_path):
+        nodes_dest = self.get_destination_nodes(node)
+
         for dest in range(0, len(nodes_dest)):
-            path.append(nodes_dest[dest])
-            self.get_path(nodes_dest[dest], path)
-        print(path)
+            self.paths[node_origin][count_path].append(nodes_dest[dest])
+            self.get_path(node_origin, nodes_dest[dest], count_path)
+            
 
-    def node_paths(self, node):
-        self.paths[node] = []
-        nodes_dest = self.get_dest_nodes(node)
-        print("primeiro nivel", nodes_dest)
+    def get_all_paths(self):
+        self.paths.insert(0, [])
+    
+        for node in range(0, self.get_qtd_nodes()):
+            self.get_node_paths(node)
 
-        for dest in range(0, len(nodes_dest)):
-            path = []
-            path.append(nodes_dest[dest])
-            self.get_path(nodes_dest[dest], path)
-            print("meu path", path)
-            self.paths[node].append(path)
+        return self.paths
 
-        print("meu resultado final")
-        print(self.paths)
-        print(self.nodes)
+    def get_node_cost(self, node):
+        self.costs = [0] * (self.get_qtd_nodes() + 1)
+        self.get_costs()
+        return self.costs[node]
+
+    def get_costs(self):
+        self.costs = [0] * (self.get_qtd_nodes() + 1)
+        for node in range(0, self.get_qtd_nodes()):
+            if self._node_only_origin(node):
+                if len(self.paths[node]) == 1:
+                    self.costs[node] = -1
+                else:
+                    self.costs[node] = 6
+            
+            self.get_cost(self.paths[node])
+        del self.costs[0]
+        del self.costs[self.start]
+        return self.costs
+
+    def get_cost(self, paths):
+        for path in range(0, len(paths)):
+            for edge in range(len(paths[path])-1, -1, -1):
+                custo = ((edge + 1) * 6)
+                if(self.costs[paths[path][edge]] < custo):
+                    self.costs[paths[path][edge]] = custo   
