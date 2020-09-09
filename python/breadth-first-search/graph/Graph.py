@@ -100,9 +100,9 @@ class Graph(object):
             
             self.get_cost(self.paths[node])
 
-        del self.costs[0]
         del self.costs[self.start -1 ]
         self.costs = [-1 if cost==0 else cost for cost in self.costs]
+        del self.costs[0]
         return self.costs
 
     def get_cost(self, paths):
