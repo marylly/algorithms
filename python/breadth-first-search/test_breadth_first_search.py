@@ -7,28 +7,27 @@ class TestBreadthFirstSearch(unittest.TestCase):
     graph = None
 
     def setUp(self):
-        self.START = 2
+        self.START = 1
         self.graph = Graph(self.START)
         self.graph.add_edge(4, 2)
         self.graph.add_edge(1, 2)
         self.graph.add_edge(1, 3)
-        self.graph.add_edge(3, 5)
         return super().setUp()
 
     def test_node_quantity_input(self):
-        self.assertEqual(self.graph.get_qtd_nodes(), 5)
+        self.assertEqual(self.graph.get_qtd_nodes(), 4)
 
     def test_node_start_input(self):
         self.assertEqual(self.graph.get_start(), self.START)
 
     def test_add_edges(self):
-        self.assertEqual(list(self.graph.get_nodes().keys()), [4, 1, 3])
+        self.assertEqual(list(self.graph.get_nodes().keys()), [4, 1])
 
     def test_get_origin_nodes(self):
-        self.assertEqual(set(self.graph.get_origin_nodes()), set([1,3,4]))
+        self.assertEqual(set(self.graph.get_origin_nodes()), set([1,4]))
 
     def test_get_all_destination_nodes(self):
-        self.assertEqual(self.graph.get_all_destination_nodes(), set([2,3,5]))
+        self.assertEqual(self.graph.get_all_destination_nodes(), set([2,3]))
 
     def test_get_destination_nodes(self):
         self.assertEqual(self.graph.get_destination_nodes(1), [2,3])
@@ -41,7 +40,6 @@ class TestBreadthFirstSearch(unittest.TestCase):
 
     def test_last_path_node(self):
         self.assertEqual(self.graph.check_if_last_path_node(2), True)
-        self.assertEqual(self.graph.check_if_last_path_node(5), True)
 
     # def test_node_path(self):
     #     self.assertEqual(self.graph.get_node_paths(1),[[2],[3,5]])
@@ -54,7 +52,7 @@ class TestBreadthFirstSearch(unittest.TestCase):
 
     def test_all_cost(self):
         self.graph.get_all_paths()
-        self.assertEqual(self.graph.get_costs(),  [6, 6, -1, 12])
+        self.assertEqual(self.graph.get_costs(),  [6, 6, -1])
 
     # def test_add_node(self):
     #     """
