@@ -5,8 +5,8 @@ class Graph(object):
     nodes = {}
     paths = []
     costs = []
-    def __init__(self, qtd_nodes, start=None):
-        self.qtd_nodes = qtd_nodes
+    qtd_nodes = 0
+    def __init__(self, start=None):
         self.start = start
 
     def get_qtd_nodes(self):
@@ -26,9 +26,15 @@ class Graph(object):
 
     def add_edge(self, origin, destination, cost=float('inf')):
         self.nodes.setdefault(origin, [])
+        self.set_node_quantity(origin)
+        self.set_node_quantity(destination)
 
         if self._dest_not_exists_in_node(origin, destination):
             self.nodes[origin].append({'dest': destination, 'cost': float('inf')})
+
+    def set_node_quantity(self, node):
+        if node > self.qtd_nodes:
+            self.qtd_nodes = node
 
     def get_destination_nodes(self, node):
         destinations = []
