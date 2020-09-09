@@ -90,7 +90,8 @@ class Graph(object):
 
     def get_costs(self):
         self.costs = [0] * (self.get_qtd_nodes() + 1)
-        for node in range(0, self.get_qtd_nodes()):
+        list_nodes = [ node for node in range(0, self.get_qtd_nodes())]
+        for index, node in enumerate(list_nodes, 0):
             if self._node_only_origin(node):
                 if len(self.paths[node]) == 1:
                     self.costs[node] = -1
@@ -98,13 +99,19 @@ class Graph(object):
                     self.costs[node] = 6
             
             self.get_cost(self.paths[node])
+
         del self.costs[0]
-        del self.costs[self.start]
+        del self.costs[self.start -1 ]
+        self.costs = [-1 if cost==0 else cost for cost in self.costs]
         return self.costs
 
     def get_cost(self, paths):
         for path in range(0, len(paths)):
             for edge in range(len(paths[path])-1, -1, -1):
-                custo = ((edge + 1) * 6)
+                if self.get_start() in paths[path]:
+                    custo = (edge -1)  * 6
+                else:
+                    custo = ((edge + 1) * 6)
+
                 if(self.costs[paths[path][edge]] < custo):
                     self.costs[paths[path][edge]] = custo   
