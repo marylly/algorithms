@@ -3,14 +3,12 @@ import unittest
 from graph.Graph import Graph
 
 class TestBreadthFirstSearch(unittest.TestCase):
-    QUANTITY = None
     START = None
     graph = None
 
     def setUp(self):
-        self.QUANTITY = 5
         self.START = 2
-        self.graph = Graph(self.QUANTITY, self.START)
+        self.graph = Graph(self.START)
         self.graph.add_edge(4, 2)
         self.graph.add_edge(1, 2)
         self.graph.add_edge(1, 3)
@@ -18,7 +16,7 @@ class TestBreadthFirstSearch(unittest.TestCase):
         return super().setUp()
 
     def test_node_quantity_input(self):
-        self.assertEqual(self.graph.get_qtd_nodes(), self.QUANTITY)
+        self.assertEqual(self.graph.get_qtd_nodes(), 5)
 
     def test_node_start_input(self):
         self.assertEqual(self.graph.get_start(), self.START)
@@ -74,7 +72,6 @@ class TestBreadthFirstSearch(unittest.TestCase):
     #     """
 
     def tearDown(self):
-        del self.QUANTITY
         del self.START
         del self.graph
         return super().tearDown()
