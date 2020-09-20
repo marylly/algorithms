@@ -16,10 +16,10 @@ class BalancedBrackets(object):
         return list(self.expression)
 
     def get_opened_brackets(self):
-        return self.get_brackets()[:self.get_qtd_brackets_pairs()]
+        return [bracket for bracket in self.get_brackets() if bracket in '([{']
 
     def get_closing_brackets(self):
-        return self.get_brackets()[self.get_qtd_brackets_pairs():]
+        return [bracket for bracket in self.get_brackets() if bracket in ')]}']
 
     def is_balanced_brackets(self):
         balanced = 'YES'
