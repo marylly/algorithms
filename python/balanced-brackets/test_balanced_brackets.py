@@ -28,6 +28,11 @@ class Test_Balanced_Brackets(unittest.TestCase):
     def test_is_balanced_brackets(self):
         self.assertEqual(self.bb.is_balanced_brackets(),'YES')
 
+    def test_is_not_balanced_brackets(self):
+        expression = "{{[[(()]]]}}"
+        bb = BalancedBrackets(expression)
+        self.assertEqual(bb.is_balanced_brackets(),'NO')
+
     def tearDown(self):
         self.expression = None
         self.bb = None
