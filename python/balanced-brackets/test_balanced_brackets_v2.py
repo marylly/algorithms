@@ -29,20 +29,17 @@ class Test_Balanced_Brackets_v2(unittest.TestCase):
     #     self.assertEqual(graph.get_nodes(),{1: ['{','}'], 2: ['{','}'], 3: ['(',')'], 4: ['[',']']})
 
     def test_is_balanced_brackets(self):
-        # expression = "{[()]}" #YES
-        # expression = "{[(])}" #NO
+        # expression = "{[()]}" #YES - Ok
+        # expression = "{[(])}" #NO - Ok
         # expression = "{{[[(())]]}}" #YES
         # expression = "{{([])}}" #YES
-        # expression = "{{)[](}}" #NO
+        # expression = "{{)[](}}" #YES
         # expression = "{(([])[])[]}" #YES
-        # expression = "{(([])[])[]]}" #NO
-        expression = "{(([])[])[]}[]" #YES
+        # expression = "{(([])[])[]]}" #NO - Ok
+        # expression = "{(([])[])[]}[]" #YES
+        expression = "{[(())]}[]" #YES - Ok
         graph = Graph(expression)
         self.assertEqual(graph.is_balanced_brackets(),'YES')     
-
-
-
-
 
 if __name__ == '__main__':
     unittest.main()
