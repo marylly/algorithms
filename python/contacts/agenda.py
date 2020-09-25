@@ -13,10 +13,18 @@ class Agenda:
     def add(self, name):
         if self.head:
             pointer = self.head
-            while pointer.next:
+            while pointer:
+                if max(name, pointer.name) == name:
+                    if pointer.next:
+                        if min(name, pointer.next.name) == name:
+                            aux = pointer.next
+                            pointer.next = Contact(name)
+                            pointer.next.next = aux
+                            break
+                    else:
+                        pointer.next = Contact(name)
+                        break
                 pointer = pointer.next
-
-            pointer.next = Contact(name)
         else:
             self.head = Contact(name)
             self._size = self._size + 1
@@ -24,10 +32,8 @@ class Agenda:
     def search(self, partial):
         partial = partial.lower()
         count = 0
-        if partial in self.head.name:
-            count = count + 1
 
-        pointer = self.head.next
+        pointer = self.head
 
         while pointer:
             if partial in pointer.name:
