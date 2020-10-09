@@ -1,0 +1,8 @@
+.coverage
+.vscode
+python/.coverage
+python/__pycache__
+python/*/.coverage
+python/*/__pycache__
+python/*/*/__pycache__
+python/*/htmlcov
