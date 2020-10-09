@@ -54,5 +54,15 @@ class Test_Contacts(unittest.TestCase):
         self.assertEqual(agenda.search('ssssss'), 0)
         self.assertEqual(agenda, 'test')
 
+    def test_case_02(self):
+        agenda = Agenda()
+        agenda.add('s')
+        agenda.add('a')
+        agenda.add('c')
+        agenda.add('r')
+        agenda.add('bba')
+        agenda.add('xh')
+        self.assertEqual(agenda, 'test')
+
 if __name__ == '__main__':
     unittest.main()
