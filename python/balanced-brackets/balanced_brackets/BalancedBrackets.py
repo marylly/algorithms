@@ -27,7 +27,7 @@ class BalancedBrackets(object):
         closed = self.get_closing_brackets()
         qtd_pairs = self.get_qtd_brackets_pairs() - 1
         for pair_brackets in range(0, qtd_pairs):
-            if opened[pair_brackets]+closed[qtd_pairs - pair_brackets] not in '()[]{}':
+            if opened[pair_brackets]+closed[qtd_pairs - pair_brackets] not in '()[]{}' or opened[pair_brackets]+closed[qtd_pairs - pair_brackets] in ')(][}{':
                 balanced = 'NO'
 
         return balanced
